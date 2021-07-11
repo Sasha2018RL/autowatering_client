@@ -22,7 +22,7 @@ class SerialClient:
 
     def send(self, data):
         print('written '+data)
-        self.ser.write(data)
+        self.ser.write(str.encode(data))
 
     def poll(self):
         seq = []
