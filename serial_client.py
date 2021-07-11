@@ -8,22 +8,26 @@ class SerialClient:
         self.io = socket_io_instance
         try:
             self.ser = serial.Serial(
-                port='/dev/ttyACM0',
+                port='/dev/ttyUSB0',
                 baudrate=9600,
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS,
                 timeout=0)
+            return;
         except Exception as e:
+            print(e)
             try:
                 self.ser = serial.Serial(
-                    port='/dev/ttyUSB0',
+                    port='/dev/ttyACM0',
                     baudrate=9600,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
                     timeout=0)
+                return
             except Exception as e:
+                print(e)
                 self.ser = serial.Serial(
                     port='/dev/ttyUSB1',
                     baudrate=9600,
