@@ -43,6 +43,7 @@ class SerialClient:
         self.ser.write(str.encode(data))
 
     def poll(self):
+        pass
         # seq = []
         # count = 1
         # joined_seq = ''
