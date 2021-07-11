@@ -19,6 +19,7 @@ class SerialClient:
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
             timeout=0)
+        self.io.emit('no-port', 'Успешно подключен к порту '+port_address+'!')
 
     def send(self, data):
         print('written '+data)
