@@ -6,34 +6,34 @@ import serial
 class SerialClient:
     def __init__(self, socket_io_instance):
         self.io = socket_io_instance
-        # try:
-        self.ser = serial.Serial(
-            port='/dev/ttyUSB0',
-            baudrate=9600,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            bytesize=serial.EIGHTBITS,
-            timeout=0)
-        # except Exception as e:
-        #     print(e)
-        #     try:
-        #         self.ser = serial.Serial(
-        #             port='/dev/ttyACM0',
-        #             baudrate=9600,
-        #             parity=serial.PARITY_NONE,
-        #             stopbits=serial.STOPBITS_ONE,
-        #             bytesize=serial.EIGHTBITS,
-        #             timeout=0)
-        #         return
-        #     except Exception as e:
-        #         print(e)
-        #         self.ser = serial.Serial(
-        #             port='/dev/ttyUSB1',
-        #             baudrate=9600,
-        #             parity=serial.PARITY_NONE,
-        #             stopbits=serial.STOPBITS_ONE,
-        #             bytesize=serial.EIGHTBITS,
-        #             timeout=0)
+        try:
+            self.ser = serial.Serial(
+                port='/dev/ttyUSB0',
+                baudrate=9600,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                timeout=0)
+        except Exception as e:
+            print(e)
+            try:
+                self.ser = serial.Serial(
+                    port='/dev/ttyACM0',
+                    baudrate=9600,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=0)
+                return
+            except Exception as e:
+                print(e)
+                self.ser = serial.Serial(
+                    port='/dev/ttyUSB1',
+                    baudrate=9600,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=0)
         self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
