@@ -34,6 +34,7 @@ class SerialClient:
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
                     timeout=50)
+        self.ser.open()
         self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
