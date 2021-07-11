@@ -7,37 +7,26 @@ class SerialClient:
     def __init__(self, socket_io_instance):
         self.io = socket_io_instance
         try:
-            self.ser = serial.Serial(
-                port='/dev/ttyUSB0',
-                baudrate=9600,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                bytesize=serial.EIGHTBITS,
-                timeout=50)
+            ser = serial.Serial()
+            ser.port = "/dev/ttyUSB0"
+            ser.baudrate = 9600
+            ser.bytesize = serial.EIGHTBITS  # number of bits per bytes
+            ser.parity = serial.PARITY_NONE  # set parity check: no parity
+            ser.stopbits = serial.STOPBITS_ONE  # number of stop bits
+            # ser.timeout = None          #block read
+            ser.timeout = 1  # non-block read
+            # ser.timeout = 2              #timeout block read
+            ser.xonxoff = False  # disable software flow control
+            ser.rtscts = False  # disable hardware (RTS/CTS) flow control
+            ser.dsrdtr = False  # disable hardware (DSR/DTR) flow control
+            ser.writeTimeout = 2  # timeout for write
+            self.ser = ser
         except Exception as e:
             print(e)
-            try:
-                self.ser = serial.Serial(
-                    port='/dev/ttyACM0',
-                    baudrate=9600,
-                    parity=serial.PARITY_NONE,
-                    stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS,
-                    timeout=50)
-                return
-            except Exception as e:
-                print(e)
-                self.ser = serial.Serial(
-                    port='/dev/ttyUSB1',
-                    baudrate=9600,
-                    parity=serial.PARITY_NONE,
-                    stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS,
-                    timeout=50)
         self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
-        print('written '+data)
+        print('written ' + data)
         if not self.ser.isOpen():
             self.ser.open()
         self.ser.write(str.encode(data))
