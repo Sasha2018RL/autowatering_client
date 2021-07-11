@@ -5,21 +5,33 @@ import serial
 
 class SerialClient:
     def __init__(self, socket_io_instance):
-        port_address = '/dev/ttyACM0'
-        if not os.path.exists(port_address):
-            port_address = '/dev/ttyUSB0'
-            if not os.path.exists(port_address):
-                port_address = '/dev/ttyUSB1'
-        print(port_address)
         self.io = socket_io_instance
-        self.ser = serial.Serial(
-            port=port_address,
-            baudrate=9600,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            bytesize=serial.EIGHTBITS,
-            timeout=0)
-        self.io.emit('no-port', 'Успешно подключен к порту '+port_address+'!')
+        try:
+            self.ser = serial.Serial(
+                port='/dev/ttyACM0',
+                baudrate=9600,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                timeout=0)
+        except Exception as e:
+            try:
+                self.ser = serial.Serial(
+                    port='/dev/ttyUSB0',
+                    baudrate=9600,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=0)
+            except Exception as e:
+                self.ser = serial.Serial(
+                    port='/dev/ttyUSB1',
+                    baudrate=9600,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=0)
+        self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
         print('written '+data)
