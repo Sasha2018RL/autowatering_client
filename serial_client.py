@@ -38,8 +38,8 @@ class SerialClient:
 
     def send(self, data):
         print('written '+data)
-        self.ser.close()
-        self.ser.open()
+        if not self.ser.isOpen():
+            self.ser.open()
         self.ser.write(str.encode(data))
 
     def poll(self):
