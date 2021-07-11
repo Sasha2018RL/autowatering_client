@@ -34,7 +34,6 @@ class SerialClient:
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
                     timeout=50)
-        self.ser.open()
         self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
@@ -44,17 +43,17 @@ class SerialClient:
         self.ser.write(str.encode(data))
 
     def poll(self):
-        seq = []
-        count = 1
-        joined_seq = ''
-        for c in self.ser.read():
-            seq.append(chr(c))
-            joined_seq = ''.join(str(v) for v in seq)
-
-            if chr(c) == '\n':
-                print("Line " + str(count) + ': ' + joined_seq)
-                self.io.emit('uart-rx', joined_seq)
-                seq = []
-                count += 1
-                break
-        return joined_seq
+        # seq = []
+        # count = 1
+        # joined_seq = ''
+        # for c in self.ser.read():
+        #     seq.append(chr(c))
+        #     joined_seq = ''.join(str(v) for v in seq)
+        #
+        #     if chr(c) == '\n':
+        #         print("Line " + str(count) + ': ' + joined_seq)
+        #         self.io.emit('uart-rx', joined_seq)
+        #         seq = []
+        #         count += 1
+        #         break
+        # return joined_seq
