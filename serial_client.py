@@ -13,7 +13,7 @@ class SerialClient:
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS,
-                timeout=0)
+                timeout=50)
         except Exception as e:
             print(e)
             try:
@@ -23,7 +23,7 @@ class SerialClient:
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
-                    timeout=0)
+                    timeout=50)
                 return
             except Exception as e:
                 print(e)
@@ -33,7 +33,7 @@ class SerialClient:
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
-                    timeout=0)
+                    timeout=50)
         self.io.emit('no-port', 'Успешно подключен к com порту')
 
     def send(self, data):
