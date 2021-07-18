@@ -54,7 +54,7 @@ def en_watering(watering_time):
 
 @sio.on('ds_watering')
 def ds_watering():
-    click(3)
+    click(4)
 
 
 @sio.on('hard_reset')
@@ -69,7 +69,7 @@ def en_usage(usage_time):
 
 @sio.on('ds_usage')
 def ds_usage():
-    click(4)
+    click(3)
 
 
 def click(count, reset_count=0, timeout=0, max_time=60, reset_at_end=False):
