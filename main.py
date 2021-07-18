@@ -91,6 +91,7 @@ def click(count, reset_count=0, timeout=0, max_time=60, reset_at_end=False):
 
 def reset():
     os.system('bash /root/reset.sh')
+    sio.emit('no-port', 'reset performed')
 
 
 sio.connect('wss://sasha.hillel.it:8443/')
