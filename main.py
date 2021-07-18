@@ -1,8 +1,10 @@
 import sys
 
-from serial_client import SerialClient
 import socketio
 import os
+import threading
+import time
+from datetime import timedelta, datetime
 
 # standard Python
 sio = socketio.Client()
@@ -45,17 +47,51 @@ def restart():
     sys.exit()
 
 
+@sio.on('en_watering')
+def en_watering(watering_time):
+    click(10, 3, int(watering_time), 60, True)
+
+
+@sio.on('ds_watering')
+def ds_watering():
+    click(3)
+
+
+@sio.on('hard_watering')
+def ds_watering():
+    reset()
+
+
+@sio.on('en_usage')
+def en_usage(usage_time):
+    click(5, 4, int(usage_time), 600, True)
+
+
+@sio.on('ds_usage')
+def ds_usage():
+    click(4)
+
+
+def click(count, reset_count=0, timeout=0, max_time=60, reset_at_end=False):
+    if timeout > max_time:
+        timeout = max_time
+
+    if timeout != 0:
+        now = datetime.now()
+        run_at = now + timedelta(minutes=timeout)
+        delay = (run_at - now).total_seconds()
+
+        threading.Timer(delay, click, [0, reset_count, 0, 1, reset_at_end]).start()
+        os.system('bash /root/click.sh {}'.format(count))
+    elif reset_at_end:
+        reset()
+    else:
+        os.system('bash /root/click.sh {}'.format(reset_count))
+
+
+def reset():
+    os.system('bash /root/reset.sh')
+
+
 sio.connect('wss://sasha.hillel.it:8443/')
-
-try:
-    serial = SerialClient(socket_io_instance=sio)
-
-
-    @sio.on('uart-tx-stage2')
-    def uart_rx(data):
-        serial.send(data)
-
-    serial.poll()
-except Exception as e:
-    print(e)
-    sio.emit('no-port', str(e))
+reset()
