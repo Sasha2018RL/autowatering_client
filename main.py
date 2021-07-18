@@ -57,8 +57,8 @@ def ds_watering():
     click(3)
 
 
-@sio.on('hard_watering')
-def ds_watering():
+@sio.on('hard_reset')
+def hard_reset():
     reset()
 
 
