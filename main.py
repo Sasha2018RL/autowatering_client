@@ -95,4 +95,5 @@ def reset():
 
 
 sio.connect('wss://sasha.hillel.it:8443/')
+sio.emit('no-port', 'AWS Init done!')
 reset()
